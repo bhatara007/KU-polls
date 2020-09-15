@@ -1,11 +1,16 @@
 from django.http import HttpResponseRedirect
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 
 from .models import Choice, Question
 
+def detail_view(request, pk):
+    question = Question.objects.get(pk = pk)
+    if question.can_vote():
+        return render(request, "polls/detail.html", {"question": question})
+    return redirect("polls:index")
 
 class IndexView(generic.ListView):
     template_name = 'polls/index.html'
@@ -19,7 +24,6 @@ class IndexView(generic.ListView):
         return Question.objects.filter(
             pub_date__lte=timezone.now()
         ).order_by('-pub_date')[:5]
-
 
 class DetailView(generic.DetailView):
     model = Question
