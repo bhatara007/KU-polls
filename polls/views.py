@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
+from django.contrib import messages
 
 from .models import Choice, Question
 
@@ -10,6 +11,7 @@ def detail_view(request, pk):
     question = Question.objects.get(pk = pk)
     if question.can_vote():
         return render(request, "polls/detail.html", {"question": question})
+    messages.warning(request, "This poll already expried")
     return redirect("polls:index")
 
 class IndexView(generic.ListView):

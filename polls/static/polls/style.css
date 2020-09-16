@@ -1,7 +1,9 @@
 body {
-    background: white url("images/bg.gif") no-repeat;
     background-size: 10000px 100px;
+    background: white url("images/bg.gif") no-repeat;
+
 }
 li a {
-    color: black;
+    color: blue;
+    padding-right: 5px;
 }
