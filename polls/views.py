@@ -11,7 +11,7 @@ def detail_view(request, pk):
     question = Question.objects.get(pk = pk)
     if question.can_vote():
         return render(request, "polls/detail.html", {"question": question})
-    messages.warning(request, "This poll already expried")
+    messages.warning(request, "This poll already expired")
     return redirect("polls:index")
 
 class IndexView(generic.ListView):
@@ -25,7 +25,7 @@ class IndexView(generic.ListView):
         """
         return Question.objects.filter(
             pub_date__lte=timezone.now()
-        ).order_by('-pub_date')[:5]
+        ).order_by('-end_date')[:5]
 
 class DetailView(generic.DetailView):
     model = Question
