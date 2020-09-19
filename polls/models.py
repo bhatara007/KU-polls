@@ -9,7 +9,8 @@ class Question(models.Model):
     list_filter = ['pub_date','end_date']
     question_text = models.CharField(max_length=200)
     pub_date = models.DateTimeField('date published')
-    end_date = models.DateTimeField('Date the polls expires')
+    '''create datetime field for end_date'''
+    end_date = models.DateTimeField('Date the polls expires') 
     def __str__(self):
         return self.question_text
     def was_published_recently(self):
