@@ -1,6 +1,18 @@
 body {
+    background-size: 10000px 100px;
     background: white url("images/bg.gif") no-repeat;
+
 }
 li a {
-    color: black;
+    color: blue;
+    padding-right: 6px;
 }
+table {
+    border-collapse: collapse;
+  }
+  
+  table, th, td {
+    border: 1px solid rgb(0, 0, 0);
+    padding: 7px;
+    text-align: center;
+  }
