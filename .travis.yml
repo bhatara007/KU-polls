@@ -1,21 +1,25 @@
-language: python
+    language: python # => 1
 
-# you can use Python 3.7 instead
-python: "3.6"
+    python: # => 2
 
-# don't clone more than necessary
-git:
-  depth: 1
-  
-env: # => 4
-  -DJANGO=1.8
-# Install any dependencies
-install:
-  - pip install -r requirements.txt
-    
-# script to run tests. Script can have many commands, one per line.
-script: 
-  - python3 -m coverage run --source='.' manage.py test polls
+      - "2.6"
 
-after_script:
-  - bash <(curl -s https://codecov.io/bash)
+      - "2.7"
+
+    services: # => 3
+
+      - mysql
+
+    env: # => 4
+
+      -DJANGO=1.8 DB=mysql
+    install: # => 5
+
+      - pip install -r requirements.txt
+
+    before_script: # => 6
+
+      - mysql -e 'create database test;' -u root
+    script: # => 7
+
+      - python manage.py test
