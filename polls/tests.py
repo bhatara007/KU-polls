@@ -171,4 +171,4 @@ class QuestionDetailViewTests(TestCase):
 
 
 if __name__ == '__main__':
-    QuestionModelTests.main()
+    uni.main()
