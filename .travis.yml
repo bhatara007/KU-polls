@@ -4,6 +4,8 @@ python:
 # command to install dependencies
 env:
   - SECRET_KEY='0n6$t9bxv1vm(p(z&rjc7$lmpl3)t&q2t(7qhpkec(tt(_&znr'
+  - DJANGO_VERSION=2.1.13
+  - DJANGO_VERSION=2.2.6
 services: 
   - postgresql
 install: 
