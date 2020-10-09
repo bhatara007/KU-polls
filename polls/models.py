@@ -6,7 +6,7 @@ from django.utils import timezone
 
 
 def count_votes():
-    """The method for count the number of votes for each polls."""
+    """Count votes method."""
     count = 0
     for c in Question.objects.get(pk=id).choices_set.all():
         count = c.votes
@@ -24,21 +24,21 @@ class Question(models.Model):
     end_date = models.DateTimeField('Date the polls expires')
 
     def __str__(self):
-        """Method for return a string represent for Question class."""
+        """Represent String method for models class."""
         return self.question_text
 
     def was_published_recently(self):
-        """Method for check Question that published recently."""
+        """Check Question that published recently."""
         now = timezone.now()
         return now - datetime.timedelta(days=1) <= self.pub_date <= now
 
     def is_published(self):
-        """Method for check Question that published or not."""
+        """Check Question that published or not."""
         now = timezone.now()
         return self.pub_date <= now
 
     def can_vote(self):
-        """Method for check Question that can vote or not."""
+        """Check Question that can vote or not."""
         now = timezone.now()
         return self.pub_date <= now <= self.end_date
 
@@ -56,5 +56,5 @@ class Choice(models.Model):
     votes = models.IntegerField(default=0)
 
     def __str__(self):
-        """Method for return a string represent for Choice class."""
+        """Return a string represent for Choice class."""
         return self.choice_text

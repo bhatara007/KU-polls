@@ -11,7 +11,8 @@ from .models import Choice, Question
 
 def detail_view(request, pk):
     """
-    Function for redirect user to index page if polls already.
+    Redirect user to index page if polls already.
+
     expired if not user can direct to detail page.
     """
     question = Question.objects.get(pk=pk)
@@ -30,6 +31,7 @@ class IndexView(generic.ListView):
     def get_queryset(self):
         """
         Return the last five published questions (not including those set to be.
+
         published in the future).
         """
         return Question.objects.filter(
@@ -56,7 +58,7 @@ class ResultsView(generic.DetailView):
 
 
 def vote(request, question_id):
-    """Function for add vote to each poll."""
+    """Add vote function to each poll."""
     question = get_object_or_404(Question, pk=question_id)
     try:
         selected_choice = question.choice_set.get(pk=request.POST['choice'])

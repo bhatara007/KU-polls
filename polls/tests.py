@@ -15,6 +15,7 @@ class QuestionModelTests(TestCase):
     def test_was_published_recently_with_future_question(self):
         """
         was_published_recently() returns False for questions whose pub_date.
+
         is in the future.
         """
         time = timezone.now() + datetime.timedelta(days=30)
@@ -24,6 +25,7 @@ class QuestionModelTests(TestCase):
     def test_was_published_recently_with_old_question(self):
         """
         was_published_recently() returns False for questions whose pub_date.
+
         is older than 1 day.
         """
         time = timezone.now() - datetime.timedelta(days=1, seconds=-1)
@@ -33,6 +35,7 @@ class QuestionModelTests(TestCase):
     def test_was_published_recently_with_recent_question(self):
         """
         was_published_recently() returns True for questions whose pub_date.
+
         is within the last day.
         """
         time = timezone.now() - datetime.timedelta(hours=23, minutes=59, seconds=59)
@@ -78,6 +81,7 @@ class QuestionModelTests(TestCase):
 def create_question(question_text, pub_date, end_date):
     """
     Create a question with the given `question_text` and published the.
+
     given number of `days` offset to now (negative for questions published.
     in the past, positive for questions that have yet to be published).
     """
@@ -99,6 +103,7 @@ class QuestionIndexViewTests(TestCase):
     def test_past_question(self):
         """
         Questions with a pub_date in the past are displayed on the.
+
         index page.
         """
         create_question(question_text="Past question.", pub_date=-30, end_date=-29)
@@ -112,6 +117,7 @@ class QuestionIndexViewTests(TestCase):
     def test_future_question(self):
         """
         Questions with a pub_date in the future aren't displayed on.
+
         the index page.
         """
         create_question(question_text="Future question.", pub_date=30, end_date=31)
@@ -122,6 +128,7 @@ class QuestionIndexViewTests(TestCase):
     def test_future_question_and_past_question(self):
         """
         Even if both past and future questions exist, only past questions.
+
         are displayed.
         """
         create_question(question_text="Past question.", pub_date=-30, end_date=-29)
@@ -156,6 +163,7 @@ class QuestionDetailViewTests(TestCase):
     def test_past_question(self):
         """
         The detail view of a question with a pub_date in the past.
+
         displays the question's text.
         """
         past_question = create_question(question_text='Past Question.', pub_date=-5, end_date=-4)
