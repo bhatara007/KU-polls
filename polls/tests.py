@@ -1,5 +1,6 @@
 """Unittests for Django polls application."""
 import datetime
+import unittest
 
 from django.test import TestCase
 from django.utils import timezone
@@ -171,4 +172,4 @@ class QuestionDetailViewTests(TestCase):
 
 
 if __name__ == '__main__':
-    uni.main()
+    unittest.main()
