@@ -7,5 +7,5 @@ cover_pylib = False
 omit =
     manage.py
     mysite/*
-    polls/migrations/*
     polls/init.py
+    polls/migrations/
