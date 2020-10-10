@@ -39,15 +39,15 @@ class IndexView(generic.ListView):
         ).order_by('-end_date')[:]
 
 
-class DetailView(generic.DetailView):
-    """The class that contains configuration for Detail page."""
+# class DetailView(generic.DetailView):
+#     """The class that contains configuration for Detail page."""
 
-    model = Question
-    template_name = 'polls/detail.html'
+#     model = Question
+#     template_name = 'polls/detail.html'
 
-    def get_queryset(self):
-        """Excludes any questions that aren't published yet."""
-        return Question.objects.filter(pub_date__lte=timezone.now())
+#     def get_queryset(self):
+#         """Excludes any questions that aren't published yet."""
+#         return Question.objects.filter(pub_date__lte=timezone.now())
 
 
 class ResultsView(generic.DetailView):
