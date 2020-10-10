@@ -4,15 +4,6 @@ import datetime
 from django.db import models
 from django.utils import timezone
 
-
-def count_votes():
-    """Count votes method."""
-    count = 0
-    for c in Question.objects.get(pk=id).choices_set.all():
-        count = c.votes
-    return count
-
-
 class Question(models.Model):
     """Question class for Django poll Application."""
 
