@@ -5,21 +5,21 @@ from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
 from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 
-from .models import Choice, Question
+from .models import Choice, Question, Vote
 
 
+
+@login_required
 def detail_view(request, pk):
-    """
-    Redirect user to index page if polls already.
+    """Show the detail of the question or error when vote is not allowed."""
+    question = get_object_or_404(Question, pk=pk)
+    selected_vote = "None"
+    if Vote.objects.filter(user = request.user, question = question):
+        selected_vote = Vote.objects.filter(user = request.user, question = question).first().choice.choice_text
+    return render(request, 'polls/detail.html', {'question': question, 'selected_vote': selected_vote})
 
-    expired if not user can direct to detail page.
-    """
-    question = Question.objects.get(pk=pk)
-    if question.can_vote():
-        return render(request, "polls/detail.html", {"question": question})
-    messages.warning(request, "This poll already expired")
-    return redirect("polls:index")
 
 
 class IndexView(generic.ListView):
@@ -56,7 +56,7 @@ class ResultsView(generic.DetailView):
     model = Question
     template_name = 'polls/results.html'
 
-
+@login_required
 def vote(request, question_id):
     """Add vote function to each poll."""
     question = get_object_or_404(Question, pk=question_id)
@@ -69,6 +69,5 @@ def vote(request, question_id):
             'error_message': "You didn't select a choice.",
         })
     else:
-        selected_choice.votes += 1
-        selected_choice.save()
+        Vote.objects.update_or_create(user = request.user, question = question, defaults= {'choice': selected_choice})
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
