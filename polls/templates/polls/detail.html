@@ -5,6 +5,8 @@
 
 {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
+<p> Your previous vote is choice: {{last_vote}} {% if not selected_vote %} please vote !!{% endif %} </p>
+    
 <form action="{% url 'polls:vote' question.id %}" method="post">
 {% csrf_token %}
 {% for choice in question.choice_set.all %}
@@ -13,4 +15,5 @@
 {% endfor %}
 <input type="submit" value="Vote">
 <a href="{% url 'polls:index' %}">Back to List of Polls</a>
+    
 </form>
