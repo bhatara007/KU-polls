@@ -34,6 +34,7 @@ class VotingTests(TestCase):
         self.second_choice.save()
 
     def test_authenticated_user_can_replace_their_vote(self):
+        '''test authenticated user can replace their vote in this polls period'''
         response = self.client.post(reverse('polls:vote', args=(self.question.id,)), {'choice':self.first_choice.id})
         self.first_choice = self.question.choice_set.get(pk = self.first_choice.id)
         self.assertEqual(self.first_choice.vote_set.all().count(), 1)
@@ -44,6 +45,7 @@ class VotingTests(TestCase):
         self.assertEqual(self.first_choice.vote_set.all().count(), 0)
         
     def test_previous_vote_show(self):
+        '''test previos vote show on detail page'''
         response1 = self.client.get(reverse('polls:detail', args=(self.question.id,)))
         self.assertContains(response1, "None")
         self.client.post(reverse('polls:vote', args=(self.question.id,)), {'choice': self.first_choice.id})
