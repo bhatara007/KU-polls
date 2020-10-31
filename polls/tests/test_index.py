@@ -87,19 +87,6 @@ class QuestionModelTests(TestCase):
         not_published_question = Question(pub_date=pub, end_date=end)
         self.assertIs(not_published_question.is_published(), False)
 
-
-def create_question(question_text, pub_date, end_date):
-    """
-    Create a question with the given `question_text` and published the.
-
-    given number of `days` offset to now (negative for questions published.
-    in the past, positive for questions that have yet to be published).
-    """
-    time = timezone.now() + datetime.timedelta(days=pub_date)
-    time2 = timezone.now() + datetime.timedelta(days=end_date)
-    return Question.objects.create(question_text=question_text, pub_date=time, end_date=time2)
-
-
 class QuestionIndexViewTests(TestCase):
     """The class that contains a unittest for view in django polls app."""
 
