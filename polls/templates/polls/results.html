@@ -13,7 +13,7 @@
     {% for choice in question.choice_set.all %}
             <tr>
                 <td>{{ choice.choice_text }}</td>
-                <td>{{ choice.vote_set.all.count }}<a> vote </a></td>
+                <td>{{ choice.votes }}<a> vote </a></td>
             </tr>
     {% endfor %}
 </table>
