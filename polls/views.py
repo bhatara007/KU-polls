@@ -15,10 +15,12 @@ from .models import Choice, Question, Vote
 def detail_view(request, pk):
     """Show the detail of the question or error when vote is not allowed."""
     question = get_object_or_404(Question, pk=pk)
-    selected_vote = "None"
+    last_vote = "None"
+    selected_vote = False
     if Vote.objects.filter(user = request.user, question = question):
-        selected_vote = Vote.objects.filter(user = request.user, question = question).first().choice.choice_text
-    return render(request, 'polls/detail.html', {'question': question, 'selected_vote': selected_vote})
+        last_vote = Vote.objects.filter(user = request.user, question = question).first().choice.choice_text
+        selected_vote = True
+    return render(request, 'polls/detail.html', {'question': question, 'last_vote': last_vote, 'selected_vote': selected_vote})
 
 
 
