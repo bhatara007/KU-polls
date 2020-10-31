@@ -1,7 +1,7 @@
 """The view configuration for Django polls app."""
-import datetime
-import logging
+import logging, pytz
 
+from django.conf.global_settings import LOGGING
 from django.contrib.auth import user_logged_in, user_logged_out, user_login_failed
 from django.dispatch import receiver
 from django.http import HttpResponseRedirect
@@ -9,17 +9,26 @@ from django.shortcuts import get_object_or_404, render, redirect
 from django.urls import reverse
 from django.views import generic
 from django.utils import timezone
-from django.contrib import messages
+from datetime import datetime
 from django.contrib.auth.decorators import login_required
 
 from .models import Choice, Question, Vote
+
+tz = pytz.timezone('Asia/Bangkok')
+
+def now():
+    now1 = datetime.now(tz)
+    month_name = 'x มกราคม กุมภาพันธ์ มีนาคม เมษายน พฤษภาคม มิถุนายน กรกฎาคม สิงหาคม กันยายน ตุลาคม พฤศจิกายน ธันวาคม'.split()[now1.month]
+    thai_year = now1.year + 543
+    time_str = now1.strftime('%H:%M:%S')
+    return "%d %s %d %s"%(now1.day, month_name, thai_year, time_str)
 
 log = logging.getLogger("polls")
 logging.basicConfig(level=logging.INFO)
 
 def get_client_ip(request):
     """Get the client's ip address."""
-
+    
     x_forwarded_for = request.META.get('HTTP_X_FORWARDED_FOR')
     if x_forwarded_for:
         ip = x_forwarded_for.split(',')[-1].strip()
@@ -30,19 +39,19 @@ def get_client_ip(request):
 @receiver(user_logged_in)
 def log_user_logged_in(sender, request, user, **kwargs):
     """Log when user login success."""
-    log.info(f'{user.username} login from ip: {get_client_ip(request)} date: {str(datetime.now())}')
+    log.info(f'{user.username} logged in from ip: {get_client_ip(request)} date: {str(now())}')
 
 
 @receiver(user_logged_out)
 def log_user_logged_out(sender, request, user, **kwargs):
     """Log when user logout success."""
-    log.info(f'{user.username} logout from ip: {get_client_ip(request)} date: {str(datetime.now())}')
+    log.info(f'{user.username} logged out from ip: {get_client_ip(request)} date: {now()}')
 
 
 @receiver(user_login_failed)
 def log_user_login_failed(sender, request, credentials, **kwargs):
     """Log when user login failed."""
-    log.warning(f'{request.POST["username"]} login failed form ip: {get_client_ip(request)} date: {str(datetime.now())}')
+    log.warning(f'{request.POST["username"]} login failed form ip: {get_client_ip(request)} date: {now()}')
 
 @login_required
 def detail_view(request, pk):
@@ -103,6 +112,6 @@ def vote(request, question_id):
             'error_message': "You didn't select a choice.",
         })
     else:
-        log.info(f'{request.user} submitted a vote for question {question.question_text} form ip: {get_client_ip(request)} date: {datetime.now}  ')
+        log.info(f'{request.user} submitted a vote for question {question.question_text} form ip: {get_client_ip(request)} date: {now()}  ')
         Vote.objects.update_or_create(user = request.user, question = question, defaults= {'choice': selected_choice})
         return HttpResponseRedirect(reverse('polls:results', args=(question.id,)))
